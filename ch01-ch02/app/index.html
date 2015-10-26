@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>mastering backbone design</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/pnotify.custom.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            Mastering Backbone.js
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="main" class="container"></div>
+
+    <script id="contact-list-layout" type="text/template">
+      <div class="actions-bar-container"></div>
+      <div class="list-container"></div>
+      <div class="footer text-muted">
+        © 2015. <a href="#">Mastering Backbone.js</a> by <a href="https://twitter.com/abieealejandro" target="_blank">Abiee Alejandro</a>
+      </div>
+    </script>
+
+    <script id="contact-list-action-bar" type="text/template">
+      <button class="btn btn-lg btn-success">Create a new contact</button>
+    </script>
+
+    <script id="contact-list-item" type="text/template">
+      <div class="box thumbnail">
+        <div class="photo">
+          <img src="http://placehold.it/250x250" alt="Contact photo" />
+          <div class="action-bar clearfix">
+            <div class="action-buttons pull-right">
+              <button id="delete" class="btn btn-danger btn-xs">delete</button>
+              <button id="view" class="btn btn-primary btn-xs">view</button>
+            </div>
+          </div>
+        </div>
+        <div class="caption-container">
+          <div class="caption">
+            <h5><%= name %></h5>
+            <% if (phone) { %>
+              <p class="phone no-margin"><%= phone %></p>
+            <% } %>
+            <% if (email) { %>
+              <p class="email no-margin"><%= email %></p>
+            <% } %>
+            <div class="bottom">
+              <ul class="social-networks">
+                <% if (facebook) { %>
+                <li>
+                  <a href="<%= facebook %>" title="Google Drive">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <% } %>
+                <% if (twitter) { %>
+                <li>
+                  <a href="<%= twitter %>" title="Twitter">
+                    <i class="fa fa-twitter"></i>
+                  </a>
+                </li>
+                <% } %>
+                <% if (google) { %>
+                <li>
+                  <a href="<%= google %>" title="Google Drive">
+                    <i class="fa fa-google-plus"></i>
+                  </a>
+                </li>
+                <% } %>
+                <% if (github) { %>
+                <li>
+                  <a href="<%= github %>" title="Github">
+                    <i class="fa fa-github"></i>
+                  </a>
+                </li>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script id="contact-view-layout" type="text/template">
+      <div class="row page-container">
+        <div id="contact-widget" class="col-xs-12 col-sm-4 col-md-3"></div>
+        <div class="col-xs-12 col-sm-8 col-md-9">
+          <div class="row">
+            <div id="about-container"></div>
+            <div id="call-log-container"></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer text-muted">
+        © 2015. <a href="#">Mastering Backbone.js</a> by <a href="https://twitter.com/abieealejandro" target="_blank">Abiee Alejandro</a>
+      </div>
+    </script>
+
+    <script id="contact-view-widget" type="text/template">
+      <h3>John Doe</h3>
+      <img src="http://placehold.it/250x250" alt="Photo" class="img-circle" />
+      <ul class="social-networks">
+        <% if (facebook) { %>
+        <li>
+          <a href="<%= facebook %>" title="Google Drive">
+            <i class="fa fa-facebook"></i>
+          </a>
+        </li>
+        <% } %>
+        <% if (twitter) { %>
+        <li>
+          <a href="<%= twitter %>" title="Twitter">
+            <i class="fa fa-twitter"></i>
+          </a>
+        </li>
+        <% } %>
+        <% if (google) { %>
+        <li>
+          <a href="<%= google %>" title="Google Drive">
+            <i class="fa fa-google-plus"></i>
+          </a>
+        </li>
+        <% } %>
+        <% if (github) { %>
+        <li>
+          <a href="<%= github %>" title="Github">
+            <i class="fa fa-github"></i>
+          </a>
+        </li>
+        <% } %>
+      </ul>
+    </script>
+
+    <script id="contact-view-about" type="text/template">
+      <div class="panel-heading">About John Doe</div>
+      <div class="pabel-body">
+        <div class="contact-info">
+          <div class="bio">
+            <h4>Bio</h4>
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae efficitur dui, ac pellentesque nisi. Morbi sit amet nibh ante. Aenean at dui sit amet nunc elementum posuere. Fusce mauris eros, scelerisque a velit et, facilisis faucibus magna. Praesent hendrerit lacinia pharetra. Donec cursus odio nisi, maximus aliquam nibh sodales non. Sed at purus non ante efficitur semper vel et mauris.
+            </p>
+          </div>
+
+          <h4>Basic information</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>Email</th>
+                  <td><a href="mailto:<%= email %>"><%= email %></a></td>
+                </tr>
+                <tr>
+                  <th>Phone</th>
+                  <td><%= phone %></td>
+                </tr>
+                <tr>
+                  <th>Social</th>
+                  <td>
+                    <ul class="list-inline">
+                      <% if (facebook) { %>
+                      <li>
+                        <a href="<%= facebook %>" title="Google Drive">
+                          <i class="fa fa-facebook"></i>
+                        </a>
+                      </li>
+                      <% } %>
+                      <% if (twitter) { %>
+                      <li>
+                        <a href="<%= twitter %>" title="Twitter">
+                          <i class="fa fa-twitter"></i>
+                        </a>
+                      </li>
+                      <% } %>
+                      <% if (google) { %>
+                      <li>
+                        <a href="<%= google %>" title="Google Drive">
+                          <i class="fa fa-google-plus"></i>
+                        </a>
+                      </li>
+                      <% } %>
+                      <% if (github) { %>
+                      <li>
+                        <a href="<%= github %>" title="Github">
+                          <i class="fa fa-github"></i>
+                        </a>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Personal information</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td><%= name %></td>
+                </tr>
+                <tr>
+                  <th>Address</th>
+                  <td><%= address1 %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer clearfix">
+        <div class="panel-buttons">
+          <button id="back" class="btn btn-default">Go back</button>
+          <button id="delete" class="btn btn-danger">Delete</button>
+          <button id="edit" class="btn btn-success">Edit contact</button>
+        </div>
+      </div>
+    </script>
+
+    <script id="contact-view-call-log" type="text/template">
+      <div class="panel-heading">Call log</div>
+      <div class="pabel-body">
+        <div class="call-log">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Elapsed time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Income</td>
+                <td>2 days ago</td>
+                <td>3 minutes</td>
+              </tr>
+              <tr>
+                <td>Income</td>
+                <td>3 days ago</td>
+                <td>17 minutes</td>
+              </tr>
+              <tr>
+                <td>Outcome</td>
+                <td>5 days ago</td>
+                <td>1 minute</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </script>
+
+    <script id="contact-view" type="text/template">
+      <div class="row page-container">
+        <div class="col-xs-12 col-sm-4 col-md-3">
+        </div>
+
+        <div class="col-xs-12 col-sm-8 col-md-9">
+          <div class="row">
+            <div class="panel panel-simple">
+              <div class="panel-heading">Call log</div>
+              <div class="pabel-body">
+                <div class="call-log">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Elapsed time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Income</td>
+                        <td>2 days ago</td>
+                        <td>3 minutes</td>
+                      </tr>
+                      <tr>
+                        <td>Income</td>
+                        <td>3 days ago</td>
+                        <td>17 minutes</td>
+                      </tr>
+                      <tr>
+                        <td>Outcome</td>
+                        <td>5 days ago</td>
+                        <td>1 minute</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer text-muted">
+          © 2015. <a href="#">Mastering Backbone.js</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Abiee Alejandro</a>
+        </div>
+      </div>
+    </script>
+
+    <script id="contact-form-layout" type="text/template">
+      <div id="preview-container" class="col-xs-12 col-sm-4 col-md-3"></div>
+      <div id="form-container" class="col-xs-12 col-sm-8 col-md-9"></div>
+
+      <div class="footer text-muted">
+        © 2015. <a href="#">Mastering Backbone.js</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Abiee Alejandro</a>
+      </div>
+    </script>
+
+    <script id="contact-form" type="text/template">
+      <div class="panel panel-simple">
+        <div class="panel-heading">Edit contact</div>
+        <div class="panel-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="name" class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-10">
+                <input id="name" type="text" class="form-control" placeholder="Full name" value="<%= name %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="address" class="col-sm-2 control-label">Address</label>
+              <div class="col-sm-10">
+                <input id="address" type="text" class="form-control" placeholder="Street, number, interior, suite" value="<%= address1 %>" />
+              </div>
+            </div>
+            
+            <hr />
+            
+            <h4>Contact info</h4>
+            <div class="form-group">
+              <label for="name" class="col-sm-2 control-label">Phone</label>
+              <div class="col-sm-10">
+                <input id="name" type="text" class="form-control" placeholder="(123) 456 7890" value="<%= phone %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" class="col-sm-2 control-label">Email address</label>
+              <div class="col-sm-10">
+                <input id="email" type="email" class="form-control" placeholder="john.doe@example.com" value="<%= email %>" />
+              </div>
+            </div>
+
+            <hr />
+            
+            <h4>Social</h4>
+            <div class="form-group">
+              <label for="facebook" class="col-sm-2 control-label">Facebook</label>
+              <div class="col-sm-10">
+                <input id="facebook" type="text" class="form-control" placeholder="https://www.facebook.com/abiee.alejandro" value="<%= facebook %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="twitter" class="col-sm-2 control-label">Twitter</label>
+              <div class="col-sm-10">
+                <input id="twitter" type="text" class="form-control" placeholder="https://twitter.com/abieealejandro" value="<%= twitter %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="google" class="col-sm-2 control-label">Google+</label>
+              <div class="col-sm-10">
+                <input id="google" type="text" class="form-control" placeholder="https://plus.google.com/u/0/+AbieeAlejandroEchameaMárquez" value="<%= google %>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="github" class="col-sm-2 control-label">Github</label>
+              <div class="col-sm-10">
+                <input id="github" type="text" class="form-control" placeholder="https://github.com/abiee" value="<%= github %>" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="panel-footer clearfix">
+          <div class="panel-buttons">
+            <button id="cancel" class="btn btn-default">Cancel</button>
+            <button id="save" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script id="contact-form-preview" type="text/template">
+      <span class="notice">Click the image to change the avatar</span>
+      <div class="box thumbnail">
+        <div class="photo">
+          <img src="http://placehold.it/250x250" alt="Contact photo" />
+        </div>
+        <div class="caption">
+          <h5>John Doe</h5>
+          <p class="phone no-margin">3319902233</p>
+          <p class="email no-margin">abiee.alejandro@gmail.com</p>
+          <ul class="social-networks">
+            <% if (facebook) { %>
+            <li>
+              <a href="<%= facebook %>" title="Google Drive">
+                <i class="fa fa-facebook"></i>
+              </a>
+            </li>
+            <% } %>
+            <% if (twitter) { %>
+            <li>
+              <a href="<%= twitter %>" title="Twitter">
+                <i class="fa fa-twitter"></i>
+              </a>
+            </li>
+            <% } %>
+            <% if (google) { %>
+            <li>
+              <a href="<%= google %>" title="Google Drive">
+                <i class="fa fa-google-plus"></i>
+              </a>
+            </li>
+            <% } %>
+            <% if (github) { %>
+            <li>
+              <a href="<%= github %>" title="Github">
+                <i class="fa fa-github"></i>
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </script>
+
+    <script id="about-view" type="text/template">
+      <h1>About</h1>
+    </script>
+
+    <script src="js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/sweetalert.min.js"></script>
+    <script src="js/vendor/pnotify.custom.min.js"></script>
+    <script src="js/vendor/underscore-min.js"></script>
+    <script src="js/vendor/backbone-min.js"></script>
+
+    <script src="js/common.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/apps/contacts/router.js"></script>
+    <script src="js/apps/contacts/models/contact.js"></script>
+    <script src="js/apps/contacts/collections/contactCollection.js"></script>
+    <script src="js/apps/contacts/contactList.js"></script>
+    <script src="js/apps/contacts/contactViewer.js"></script>
+    <script src="js/apps/contacts/contactEditor.js"></script>
+    <script src="js/apps/contacts/app.js"></script>
+    <script type="text/javascript">App.start();</script>
+  </body>
+</html>
