@@ -50,8 +50,8 @@ class ContactForm extends ModelView {
     });
   }
 
-  saveContact(evt) {
-    evt.preventDefault();
+  saveContact(event) {
+    event.preventDefault();
     this.model.set('name', this.getInput('#name'));
     this.model.set('phone', this.getInput('#phone'));
     this.model.set('email', this.getInput('#email'));
