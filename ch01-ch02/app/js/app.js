@@ -24,8 +24,6 @@ var App = {
     // The common place where sub-applications will be showed
     App.mainRegion = new Region({el: '#main'});
 
-    this.initializePlugins();
-
     // Create a global router to enable sub-applications to redirect to
     // other urls
     App.router = new DefaultRouter();
@@ -48,10 +46,6 @@ var App = {
     // Run subapplication
     this.currentSubapp = new SubApplication({region: App.mainRegion});
     return this.currentSubapp;
-  },
-
-  initializePlugins() {
-    PNotify.prototype.options.styling = 'bootstrap3';
   },
 
   successMessage(message) {
@@ -97,18 +91,22 @@ var App = {
   },
 
   notifySuccess(message) {
-    new PNotify({
-      title: 'Done',
+    new noty({
       text: message,
-      type: 'success'
+      layout: 'topRight',
+      theme: 'relax',
+      type: 'success',
+      timeout: 3000 // close automatically
     });
   },
 
   notifyError(message) {
-    new PNotify({
-      title: 'Error!',
+    new noty({
       text: message,
-      type: 'error'
+      layout: 'topRight',
+      theme: 'relax',
+      type: 'error',
+      timeout: 3000 // close automatically
     });
   }
 };

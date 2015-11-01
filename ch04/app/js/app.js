@@ -1,31 +1,40 @@
+'use strict';
+
+var _ = require('underscore');
+var Backbone = require('backbone');
+var BackboneValidation = require('backbone-validation');
+var swal = require('sweetalert');
+var noty = require('noty');
+var Region = require('./common').Region;
+
+// Initialize all available routes
+require('./apps/contacts/router');
+
 // General routes non sub-application dependant
-var DefaultRouter = Backbone.Router.extend({
-  routes: {
-    '': 'defaultRoute'
-  },
+class DefaultRouter extends Backbone.Router {
+  constructor(options) {
+    super(options);
+    this.routes = {
+      '': 'defaultRoute'
+    };
+    this._bindRoutes();
+  }
 
   // Redirect to contacts app by default
   defaultRoute() {
     this.navigate('contacts', true);
   }
-});
+}
 
 var App = {
-  Models: {},
-  Collections: {},
-  Routers: {},
-
   start() {
-    // Initialize all available routes
-    _.each(_.values(this.Routers), function(Router) {
-      new Router();
-    });
-
     // The common place where sub-applications will be showed
     App.mainRegion = new Region({el: '#main'});
 
+    this.initializePlugins();
+
     // Create a global router to enable sub-applications to redirect to
-    // other urls
+    // other URLs
     App.router = new DefaultRouter();
     Backbone.history.start();
   },
@@ -46,6 +55,10 @@ var App = {
     // Run subapplication
     this.currentSubapp = new SubApplication({region: App.mainRegion});
     return this.currentSubapp;
+  },
+
+  initializePlugins() {
+    //PNotify.prototype.options.styling = 'bootstrap3';
   },
 
   successMessage(message) {
@@ -111,7 +124,7 @@ var App = {
   }
 };
 
-_.extend(Backbone.Validation.callbacks, {
+_.extend(BackboneValidation.callbacks, {
   valid(view, attr) {
     var $el = view.$('#' + attr);
     if ($el.length === 0) {
@@ -187,4 +200,4 @@ _.extend(Backbone.Validation.callbacks, {
 // for global events
 _.extend(App, Backbone.Events);
 
-window.App = App;
+module.exports = App;

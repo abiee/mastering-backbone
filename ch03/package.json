@@ -1,7 +1,7 @@
 {
-  "name": "mastering-backbone-01",
+  "name": "mastering-backbone-03",
   "version": "0.0.1",
-  "description": "Source code for chapter 01 of the book Mastering Backbone",
+  "description": "Source code for chapter 03 of the book Mastering Backbone",
   "main": "index.js",
   "scripts": {
     "start": "node server",
