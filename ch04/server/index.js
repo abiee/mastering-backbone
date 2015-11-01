@@ -27,7 +27,7 @@ http.createServer(server).listen(9000, function() {
   var serverProxy = httpProxy.createProxyServer();
 
   browserSync({
-    open: false,
+    open: true,
     server: {
       baseDir: ['.tmp', 'app'],
       middleware: [
