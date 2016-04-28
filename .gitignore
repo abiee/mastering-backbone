@@ -79,3 +79,4 @@ bower_components
 ### Project ###
 .tmp
 dist
+*/server/avatar

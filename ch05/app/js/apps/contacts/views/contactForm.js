@@ -57,7 +57,7 @@ class ContactForm extends Layout {
   }
 
   inputChanged(event) {
-    var $target = $(event.target);
+    var $target = this.$(event.target);
     var value = $target.val();
     var id = $target.attr('id');
     this.model.set(id, value);

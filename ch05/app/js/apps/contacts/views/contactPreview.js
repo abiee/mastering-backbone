@@ -34,7 +34,7 @@ class ContactPreview extends ModelView {
   }
 
   showSelectFileDialog() {
-    $('#avatar').trigger('click');
+    this.$('#avatar').trigger('click');
   }
 
   fileSelected(event) {
