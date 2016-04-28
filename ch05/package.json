@@ -1,7 +1,7 @@
 {
   "name": "mastering-backbone-05",
   "version": "0.0.1",
-  "description": "Source code for chapter 04 of the book Mastering Backbone",
+  "description": "Source code for chapter 05 of the book Mastering Backbone",
   "main": "index.js",
   "scripts": {
     "bundle": "mkdir -p .tmp/js && cd app/js && browserify main.js -d -t [ jstify --engine underscore ] -o ../../.tmp/js/app.js",

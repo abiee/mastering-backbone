@@ -58,10 +58,7 @@ var contacts = [{
     email: 'john.doe@acme.com'
   }],
   address1: 'Cuarzo Street 2369',
-  facebook: 'https://www.facebook.com/John.Doe',
-  avatar: {
-    url: 'http://www.minicoming.com/wp-content/miniwallpaper/20121202/1stezb0dwni2650.jpg'
-  }
+  facebook: 'https://www.facebook.com/John.Doe'
 }, {
   id: makeId(),
   name: 'Jane Doe',
@@ -127,7 +124,7 @@ module.exports = {
 
   updateContact(req, res, next) {
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
@@ -144,7 +141,7 @@ module.exports = {
   // to the req.params.contactId value
   findContactById(req, res, next) {
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
@@ -157,7 +154,7 @@ module.exports = {
   deleteContact(req, res, next) {
     // Ensures that contact exists
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
@@ -190,7 +187,7 @@ module.exports = {
     }
 
     // Get target contact from database
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
     if (!contact) {
       res.status(404).json({
         error: 'contact not found'

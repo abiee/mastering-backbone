@@ -44,7 +44,7 @@ function removeAvatar(contact) {
 }
 
 var contacts = [{
-  id: '1',
+  id: makeId(),
   name: 'John Doe',
   phones: [{
     description: 'home',
