@@ -24,15 +24,15 @@
   },
   "homepage": "https://github.com/abiee/mastering-backbone#readme",
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "browser-sync": "^2.11.1",
+    "body-parser": "^1.15.0",
+    "browser-sync": "^2.12.5",
     "crispy-string": "0.0.2",
     "express": "^4.13.4",
-    "http-proxy": "^1.13.1",
-    "lodash": "^4.2.1",
-    "morgan": "^1.6.1"
+    "http-proxy": "^1.13.2",
+    "lodash": "^4.11.1",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
-    "eslint": "^1.10.3"
+    "eslint": "^2.8.0"
   }
 }
