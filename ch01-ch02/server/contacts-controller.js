@@ -73,7 +73,7 @@ module.exports = {
 
   updateContact(req, res, next) {
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
@@ -90,7 +90,7 @@ module.exports = {
   // to the req.params.contactId value
   findContactById(req, res, next) {
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
@@ -103,7 +103,7 @@ module.exports = {
   deleteContact(req, res, next) {
     // Ensures that contact exists
     var contactId = req.params.contactId;
-    var contact = _.find(contacts, 'id', contactId);
+    var contact = _.find(contacts, ['id', contactId]);
 
     if (!contact) {
       res.status(404);
